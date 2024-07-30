@@ -1,4 +1,5 @@
 import argparse
+import requests
 
 def listsuid(lista):
     print("Revisando la Lista...")
@@ -6,6 +7,17 @@ def listsuid(lista):
 
 def uniquesuid(suid):
     print(f"Revisando el SUID {suid}...")
+
+    url = f'https://gtfobins.github.io/gtfobins/{suid}/#sudo'
+    
+    # Realizar la solicitud a la página
+    print(url)
+    response = requests.get(url)
+
+    if response.status_code == 200:
+        print(f"SUID {suid} is vulnerable")
+    else:
+        print(f"SUID {suid} is not vulnerable")
 
 
 if __name__ == "__main__":
