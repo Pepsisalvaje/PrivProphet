@@ -24,8 +24,7 @@ def findsuid(suid):
             # Buscar el siguiente hermano del h2 que sea un ul
             ul = h2.find_next_sibling('ul')
 
-            
-
+            # Encontrar todas las etiquetas <pre> y eliminarlas
             ul = str(ul)
 
             ul = ul.replace('<ul class="examples">',"")
@@ -43,9 +42,8 @@ def findsuid(suid):
             #ul = re.sub(r'<p[^>]*>(.*?)</p>', r'\1', ul, flags=re.DOTALL)
 
             #ul = re.sub(r'<a\s+code="[^"]*">(.*?)</code>', r'\1' , ul, flags=re.DOTALL)
-
+            ul = re.sub(r'</?pre[^>]*>', '', ul)
             print(ul)
-
 
         else:
             print('No se encontró el elemento <h2> con id "7z".')
