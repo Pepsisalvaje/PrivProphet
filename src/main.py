@@ -1,5 +1,6 @@
 import argparse
 import requests
+from bs4 import BeautifulSoup
 
 def listsuid(lista):
     print("Revisando la Lista...")
@@ -16,6 +17,18 @@ def uniquesuid(suid):
 
     if response.status_code == 200:
         print(f"SUID {suid} is vulnerable")
+        soup = BeautifulSoup(response.content, 'html.parser')
+        ul_examples = soup.find('ul', class_='examples')
+        
+        if ul_examples:
+        # Encontrar todos los elementos <code> dentro de <ul class="examples">
+            code_elements = ul_examples.find_all('code')
+        
+        for i, code_element in enumerate(code_elements, start=1):
+            code_text = code_element.text
+            print(f'Code {i}:\n{code_text}\n')
+        else:
+            print('No se encontró el elemento <ul class="examples">.')
     else:
         print(f"SUID {suid} is not vulnerable")
 
