@@ -3,6 +3,21 @@ import requests
 from bs4 import BeautifulSoup
 import re
 
+
+def encapsular_contenido_pre(match):
+    contenido_pre = match.group(1).strip()
+    lines = contenido_pre.splitlines()
+    max_width = max(len(line) for line in lines)  # Obtener el ancho máximo de línea
+    border = '+' + '-' * (max_width + 2) + '+'
+    
+    # Crear el cuadro
+    cuadro = [border]
+    for line in lines:
+        cuadro.append(f"| {line.ljust(max_width)} |")
+    cuadro.append(border)
+    
+    return "\n".join(cuadro)
+
 def listsuid(lista):
     print("Revisando la Lista...")
 
@@ -42,8 +57,9 @@ def findsuid(suid):
             #ul = re.sub(r'<p[^>]*>(.*?)</p>', r'\1', ul, flags=re.DOTALL)
 
             #ul = re.sub(r'<a\s+code="[^"]*">(.*?)</code>', r'\1' , ul, flags=re.DOTALL)
-            ul = re.sub(r'</?pre[^>]*>', '', ul)
-            print(ul)
+            #ul = re.sub(r'</?pre[^>]*>', '', ul)
+            ul_formateado = re.sub(r'<pre[^>]*>(.*?)</pre>', encapsular_contenido_pre, ul, flags=re.DOTALL)
+            print(ul_formateado)
 
         else:
             print('No se encontró el elemento <h2> con id "7z".')
