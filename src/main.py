@@ -2,7 +2,7 @@ import argparse
 import requests
 from bs4 import BeautifulSoup
 import re
-
+from colorama import Fore, Style, init
 
 def encapsular_contenido_pre(match):
     contenido_pre = match.group(1).strip()
@@ -19,7 +19,20 @@ def encapsular_contenido_pre(match):
     return "\n".join(cuadro)
 
 def listsuid(lista):
-    print("Revisando la Lista...")
+    try:
+        with open(lista, 'r') as file:
+            suids = file.readlines()
+            suids = [suid.strip() for suid in suids]
+    except FileNotFoundError:
+        print(f"El archivo {lista} no fue encontrado.")
+    except Exception as e:
+        print(f"Ocurrió un error al procesar el archivo: {e}")
+
+    for i in suids:
+        print(f"{Style.BRIGHT}********** SUID:", i, " *******************")
+        findsuid(i)
+        print("******************************************")
+        print("\n")
 
 def findsuid(suid):
     url = f'https://gtfobins.github.io/gtfobins/{suid}/#sudo'
@@ -29,8 +42,6 @@ def findsuid(suid):
     response = requests.get(url)
 
     if response.status_code == 200:
-        print(f"SUID {suid} is vulnerable")
-        print("\n")
         soup = BeautifulSoup(response.content, 'html.parser')
         h2 = soup.find('h2', id='sudo')
         #ul_examples = soup.find('ul', class_='examples')

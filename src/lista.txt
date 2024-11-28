@@ -1,0 +1,6 @@
+sudo
+dpkg
+ls
+pwd
+cat
+ls
